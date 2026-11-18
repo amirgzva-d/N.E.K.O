@@ -71,3 +71,15 @@ Windows automation, file operations, browser actions, and application control ar
 ## Current status
 
 The repository architecture and roadmap documents have been added. No runtime code has been modified yet, and no Windows launch or feature test has been claimed. The next engineering task is to establish a clean Windows baseline before making code changes.
+
+
+## Avatar replacement requirement (locked decision)
+
+The initial look is **2D anime Live2D**, but the avatar must remain replaceable after the first release.
+
+- [ ] Add a model picker using the existing Live2D model manager/API.
+- [ ] Support importing a complete Cubism model package while preserving relative paths.
+- [ ] Keep model-specific emotion/motion mappings with the selected model.
+- [ ] Prove that switching the visual model preserves the same NOVA persona, memory, chat history, and voice.
+- [ ] Keep a known-good bundled model as a recovery option.
+- [ ] Treat future 3D or other visual styles as optional adapters; do not let them delay the first 2D release.
