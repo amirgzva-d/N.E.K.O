@@ -89,3 +89,27 @@ Map those events to each chosen Live2D model's actual expressions and motions th
 3. Keep secrets out of Git and logs.
 4. Keep model provider, character identity, memory storage, and avatar assets independently replaceable.
 5. Test Windows first, then smaller screens and performance.
+
+
+## Replaceable anime avatar profile
+
+The first NOVA release uses a 2D anime Live2D model. The model is a replaceable visual asset, not the character's identity.
+
+- Keep model selection/import on the existing model-manager path documented in `docs/frontend/live2d.md`.
+- Use the model API's returned model identity/URL; do not build asset URLs from arbitrary local paths.
+- Preserve the Cubism package's relative folder structure and its motions, expressions, textures, and optional physics files.
+- Store NOVA's selected model identity and model-specific emotion mapping in avatar presentation settings.
+- Store persona, memory, conversation history, language preferences, and voice identity outside the model asset package.
+- When switching models, load the new model and its emotion map; do not create a new character or clear memory.
+- If the new model lacks a requested expression or motion, fall back to neutral/idle instead of failing the conversation.
+- Keep the upstream bundled models available as recovery/test fixtures. Do not overwrite upstream default character assets.
+
+The current upstream Live2D documentation identifies these model operations: `GET /api/live2d/models`, `POST /api/live2d/upload_model`, model config and emotion mapping read/write routes, and model deletion for user models. Verify permissions and behavior against the running Windows build before exposing destructive actions in NOVA's UI.
+
+## Live2D performance acceptance checks
+
+- Verify the selected model's actual blink, idle, gaze, motion, and expression assets rather than assuming every Cubism model has the same parameters.
+- Verify mouth movement against the audio actually being played, including streamed chunks and interrupted speech.
+- On interruption, stop the corresponding speech and prevent late audio chunks from continuing to animate the mouth.
+- Verify switching models while idle and after a conversation does not alter persona, memory, or provider settings.
+- Profile idle and speaking CPU/GPU usage on the target Windows machine.
