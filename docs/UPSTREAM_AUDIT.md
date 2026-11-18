@@ -62,3 +62,12 @@ This audit uses the current fork's tracked source tree and upstream developer do
 - docs/guide/local-and-offline.md
 - docs/api/rest/characters.md
 - docs/api/rest/live2d.md
+
+
+## Localization implementation details
+
+The main frontend's current locale contract is documented in docs/frontend/i18n.md. It loads exactly eight locale JSON files from static/locales, and the documentation requires all eight to remain in sync when changing shared UI strings. The React chat source has its own i18n adapter at frontend/react-neko-chat/src/i18n.ts. Prompt locale normalization is centralized in config/prompts/_locale.py, whose NEKO_CORE_LOCALES currently contains zh-CN, zh-TW, en, ja, ko, ru, es, and pt. Therefore Persian support is a cross-layer change, not just adding a translated JSON file: locale selection/normalization, main UI, React chat, prompt templates, character defaults, and RTL layout all need coordinated work and tests.
+
+## Existing Live2D quality tests
+
+The repository includes focused tests such as tests/frontend/live2d_expression_lipsync.test.cjs, tests/frontend/live2d_audio_ownership.test.js, tests/frontend/live2d_lipsync_ownership.test.js, and tests/frontend/live2d_mode_selection_restore.test.cjs. These are useful regression gates when changing avatar behavior. Their presence does not mean the NOVA model has already been tested on the user's Windows machine.
